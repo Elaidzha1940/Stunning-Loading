@@ -8,7 +8,6 @@
 //  */
 
 import SwiftUI
-import Combine
 
 struct ContentView: View {
     @State private var isLoading: Bool = false
@@ -17,7 +16,7 @@ struct ContentView: View {
     let frame: CGSize
     let primaryColor: Color
     
-    init(color: Color = .white, size: CGFloat = 90, speed: Double = 0.5) {
+    init(color: Color = .white, size: CGFloat = 120, speed: Double = 0.75) {
         timing = speed * 2
         frame = CGSize(width: size, height: size)
         primaryColor = color
@@ -47,13 +46,13 @@ struct ContentView: View {
                     x: isLoading ? frame.height / 3 : 0,
                     y: isLoading ? frame.height / 3 : 0)
         }
-        .animation(Animation.easeInOut(duration: timing), value: .repeatForever(autoreverses: true))
-        .frame(width: frame.width, height: frame.height, alignment: .center)
-        .rotationEffect(Angle(degrees: isLoading ? 360: 0))
-        .animation(Animation.easeInOut(duration: timing), value: .repeatForever(autoreverses: false))
-        .onAppear{
-            isLoading = true
+        .onAppear {
+            withAnimation(Animation.easeInOut(duration: timing).repeatForever(autoreverses: true)) {
+                isLoading = true
+            }
         }
+        .frame(width: frame.width, height: frame.height, alignment: .center)
+        .rotationEffect(Angle(degrees: isLoading ? 360 : 0))
     }
 }
 
